@@ -1,0 +1,433 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "NodeJS Contact Management RESTful API",
+    "description": "This is API Documentation of NodeJS Contact Management Project",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:2802/api/v1"
+    }
+  ],
+  "paths": {
+    "/contacts/{contactId}/addresses": {
+      "post": {
+        "security": [{
+          "UserAuth": []
+        }],
+        "tags": ["Address Endpoints"],
+        "summary": "Create new address",
+        "description": "This endpoint is used to create a new address of contact",
+        "parameters": [{
+          "name": "contactId",
+          "in": "path",
+          "description": "Contact ID"
+        }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddressRequestInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "security": [{
+          "UserAuth": []
+        }],
+        "tags": ["Address Endpoints"],
+        "summary": "Get all addresses",
+        "description": "This endpoint is used to get all addresses",
+        "parameters": [{
+          "name": "contactId",
+          "in": "path",
+          "description": "Contact ID"
+        }],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListAddressResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contacts/{contactId}/addresses/{addressId}": {
+      "put": {
+        "security": [{
+          "UserAuth": []
+        }],
+        "tags": ["Address Endpoints"],
+        "summary": "Update an address",
+        "description": "This endpoint is used to update address of contact",
+        "parameters": [
+          {
+            "name": "contactId",
+            "in": "path",
+            "description": "Contact ID"
+          },
+          {
+            "name": "addressId",
+            "in": "path",
+            "description": "Address ID"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddressRequestInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "security": [{
+          "UserAuth": []
+        }],
+        "tags": ["Address Endpoints"],
+        "summary": "Get detail of address",
+        "description": "This endpoint is used by user to get detail of address",
+        "parameters": [
+          {
+            "name": "contactId",
+            "in": "path",
+            "description": "Contact ID"
+          },
+          {
+            "name": "addressId",
+            "in": "path",
+            "description": "Address ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "security": [{
+          "UserAuth": []
+        }],
+        "tags": ["Address Endpoints"],
+        "summary": "Delete address",
+        "description": "This endpoint is used by user to delete address",
+        "parameters": [
+          {
+            "name": "contactId",
+            "in": "path",
+            "description": "Contact ID"
+          },
+          {
+            "name": "addressId",
+            "in": "path",
+            "description": "Address ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "string",
+                      "example": "OK"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "UserAuth": {
+        "in": "header",
+        "type": "apiKey",
+        "name": "token",
+        "description": "Authentication for User Endpoints"
+      }
+    },
+    "schemas": {
+      "AddressRequestInput": {
+        "type": "object",
+        "required": ["street","city","province","country","postal_code"],
+        "properties": {
+          "street": {
+            "type": "string",
+            "example": "Jalan apa"
+          },
+          "city": {
+            "type": "string",
+            "example": "Kota apa"
+          },
+          "province": {
+            "type": "string",
+            "example": "Provinsi apa"
+          },
+          "country": {
+            "type": "string",
+            "example": "Negara apa"
+          },
+          "postal_code": {
+            "type": "string",
+            "example": "52361"
+          }
+        }
+      },
+      "SuccessResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "street": {
+                "type": "string",
+                "example": "Jalan apa"
+              },
+              "city": {
+                "type": "string",
+                "example": "Kota apa"
+              },
+              "province": {
+                "type": "string",
+                "example": "Provinsi apa"
+              },
+              "country": {
+                "type": "string",
+                "example": "Negara apa"
+              },
+              "postal_code": {
+                "type": "string",
+                "example": "52361"
+              }
+            }
+          }
+        }
+      },
+      "ListAddressResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "street": {
+                  "type": "string",
+                  "example": "Jalan apa"
+                },
+                "city": {
+                  "type": "string",
+                  "example": "Kota apa"
+                },
+                "province": {
+                  "type": "string",
+                  "example": "Provinsi apa"
+                },
+                "country": {
+                  "type": "string",
+                  "example": "Negara apa"
+                },
+                "postal_code": {
+                  "type": "string",
+                  "example": "52361"
+                }
+              }
+            }
+          }
+        }
+      },
+      "BadRequestError": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "errors": {
+                "type": "string",
+                "example": "#bad request error message"
+              }
+            }
+          }
+        }
+      },
+      "NotFoundError": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "errors": {
+                "type": "string",
+                "example": "#not found error message"
+              }
+            }
+          }
+        }
+      },
+      "UnauthorizedError": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "errors": {
+                "type": "string",
+                "example": "#unauthorized error message"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
