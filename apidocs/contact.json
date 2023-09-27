@@ -1,0 +1,441 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "NodeJS Contact Management RESTful API",
+    "description": "This is API Documentation of NodeJS Contact Management Project",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:2802/api/v1"
+    }
+  ],
+  "paths": {
+    "/contacts": {
+      "post": {
+        "security": [{
+          "UserAuth": []
+        }],
+        "tags": ["Contact Endpoints"],
+        "summary": "Create new contact",
+        "description": "This endpoint is used to create a new contact",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContactRequestInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "security": [{
+          "UserAuth": []
+        }],
+        "tags": ["Contact Endpoints"],
+        "summary": "Search contacts",
+        "description": "This endpoint is used to search contacts",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Search by first_name or last_name using like, optional"
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "description": "Search by email using like, optional"
+          },
+          {
+            "name": "phone",
+            "in": "query",
+            "description": "Search by phone using like, optional"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Number of page, default 1"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Size per page, default 10"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetContactsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contacts/{contactId}": {
+      "put": {
+        "security": [{
+          "UserAuth": []
+        }],
+        "tags": ["Contact Endpoints"],
+        "summary": "Update contact",
+        "description": "This endpoint is used by user to update his contact",
+        "parameters": [{
+          "name": "contactId",
+          "in": "path",
+          "description": "Contact ID"
+        }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContactRequestInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "security": [{
+          "UserAuth": []
+        }],
+        "tags": ["Contact Endpoints"],
+        "summary": "Get detail of contact",
+        "description": "This endpoint is used by user to get detail of his contact",
+        "parameters": [{
+          "name": "contactId",
+          "in": "path",
+          "description": "Contact ID"
+        }],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Bad request error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "security": [{
+          "UserAuth": []
+        }],
+        "tags": ["Contact Endpoints"],
+        "summary": "Delete contact",
+        "description": "This endpoint is used by user to delete his contact",
+        "parameters": [{
+          "name": "contactId",
+          "in": "path",
+          "description": "Contact ID"
+        }],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "string",
+                      "example": "OK"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Bad request error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "UserAuth": {
+        "in": "header",
+        "type": "apiKey",
+        "name": "token",
+        "description": "Authentication for User Endpoints"
+      }
+    },
+    "schemas": {
+      "ContactRequestInput": {
+        "type": "object",
+        "properties": {
+          "first_name": {
+            "type": "string",
+            "example": "Bella Rizky"
+          },
+          "last_name": {
+            "type": "string",
+            "example": "Kharisma"
+          },
+          "email": {
+            "type": "string",
+            "example": "bella@test.com"
+          },
+          "phone": {
+            "type": "string",
+            "example": "081243568790"
+          }
+        }
+      },
+      "SuccessResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "example": 1
+              },
+              "first_name": {
+                "type": "string",
+                "example": "Bella Rizky"
+              },
+              "last_name": {
+                "type": "string",
+                "example": "Kharisma"
+              },
+              "email": {
+                "type": "string",
+                "example": "bella@test.com"
+              },
+              "phone": {
+                "type": "string",
+                "example": "081243568790"
+              }
+            }
+          }
+        }
+      },
+      "GetContactsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "example": 1
+                },
+                "first_name": {
+                  "type": "string",
+                  "example": "Bella Rizky"
+                },
+                "last_name": {
+                  "type": "string",
+                  "example": "Kharisma"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "bella@test.com"
+                },
+                "phone": {
+                  "type": "string",
+                  "example": "081243568790"
+                }
+              }
+            }
+          },
+          "paging": {
+            "type": "object",
+            "properties": {
+              "page": {
+                "type": "integer",
+                "example": 1
+              },
+              "pages_total": {
+                "type": "integer",
+                "example": 3
+              },
+              "items_total": {
+                "type": "integer",
+                "example": 3
+              }
+            }
+          }
+        }
+      },
+      "BadRequestError": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "errors": {
+                "type": "string",
+                "example": "#bad request error message"
+              }
+            }
+          }
+        }
+      },
+      "NotFoundError": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "errors": {
+                "type": "string",
+                "example": "#not found error message"
+              }
+            }
+          }
+        }
+      },
+      "UnauthorizedError": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "errors": {
+                "type": "string",
+                "example": "#unauthorized error message"
+              }
+            }
+          }
+        }
+      }
+
+    }
+  }
+}
