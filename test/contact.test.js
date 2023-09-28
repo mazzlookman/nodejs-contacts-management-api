@@ -1,5 +1,5 @@
 import {
-    createContactTest,
+    createContactTest, createManyContactTest,
     createUserTest,
     getContactTest,
     removeAllContactTest,
@@ -7,6 +7,7 @@ import {
 } from "./test-util.test.js";
 import supertest from "supertest";
 import {web} from "../src/app/web.js";
+import {prismaClient} from "../src/app/db.js";
 
 describe("POST /api/v1/contacts", () => {
     beforeEach(async ()=>{
@@ -148,7 +149,6 @@ describe("PUT /api/v1/contacts/:contactId", () => {
 })
 
 describe("DELETE /api/v1/contacts/:contactId", () => {
-
     beforeEach(async () => {
         await createUserTest()
         await createContactTest()
@@ -178,5 +178,87 @@ describe("DELETE /api/v1/contacts/:contactId", () => {
             .set("Authorization", "test")
 
         expect(result.status).toBe(404)
+    })
+})
+
+describe("GET /api/v1/contacts", () => {
+    beforeEach(async () => {
+        await createUserTest()
+        await createManyContactTest()
+    })
+
+    afterEach(async () => {
+        await removeAllContactTest()
+        await removeUserTest()
+    })
+
+    it("get all contacts without query", async () => {
+        const result = await supertest(web)
+            .get("/api/v1/contacts")
+            .set("Authorization","test")
+
+        expect(result.status).toBe(200)
+        expect(result.body.data.length).toBe(10)
+        expect(result.body.paging.page).toBe(1)
+        expect(result.body.paging.page_total).toBe(2)
+        expect(result.body.paging.items_total).toBe(15)
+    })
+
+    it("search all contacts page 2", async () => {
+        const result = await supertest(web)
+            .get("/api/v1/contacts")
+            .query({page:2})
+            .set("Authorization","test")
+
+        expect(result.status).toBe(200)
+        expect(result.body.data.length).toBe(5)
+        expect(result.body.paging.page).toBe(2)
+        expect(result.body.paging.page_total).toBe(2)
+        expect(result.body.paging.items_total).toBe(15)
+    })
+
+    it("search all contacts using name", async () => {
+        const result = await supertest(web)
+            .get("/api/v1/contacts")
+            .query({
+                name: "test1"
+            })
+            .set("Authorization","test")
+
+        expect(result.status).toBe(200)
+        expect(result.body.data.length).toBe(6)
+        expect(result.body.paging.page).toBe(1)
+        expect(result.body.paging.page_total).toBe(1)
+        expect(result.body.paging.items_total).toBe(6)
+    })
+
+    it("search all contacts using email", async () => {
+        const result = await supertest(web)
+            .get("/api/v1/contacts")
+            .query({
+                email: "test1"
+            })
+            .set("Authorization","test")
+
+        expect(result.status).toBe(200)
+        expect(result.body.data.length).toBe(6)
+        expect(result.body.paging.page).toBe(1)
+        expect(result.body.paging.page_total).toBe(1)
+        expect(result.body.paging.items_total).toBe(6)
+    })
+
+    it("search all contacts using phone", async () => {
+        const result = await supertest(web)
+            .get("/api/v1/contacts")
+            .query({
+                phone: "08213456761"
+            })
+            .set("Authorization","test")
+
+        expect(result.status).toBe(200)
+        expect(result.body.data.length).toBe(6)
+        expect(result.body.paging.page).toBe(1)
+        expect(result.body.paging.page_total).toBe(1)
+        expect(result.body.paging.items_total).toBe(6)
     })
 })
