@@ -2,7 +2,8 @@ import supertest from "supertest";
 import {web} from "../src/app/web.js";
 import {prismaClient} from "../src/app/db.js";
 import {logger} from "../src/app/log.js";
-import {createUserTest, removeUserTest} from "./test-util.test.js";
+import {createUserTest, getUserTest, removeUserTest} from "./test-util.test.js";
+import bcrypt from "bcrypt";
 
 describe("POST /api/v1/users", () => {
     afterEach(async () => {
@@ -138,6 +139,70 @@ describe("GET /api/v1/users/current", () => {
 
         expect(result.status).toBe(401)
         expect(result.body.errors).toBeDefined()
+    })
+})
+
+describe("PATCH /api/v1/users/current", () => {
+    beforeEach(async () => {
+        await createUserTest()
+    })
+
+    afterEach(async () => {
+        await removeUserTest()
+    })
+
+    it("should can update user", async () => {
+        const result = await supertest(web)
+            .patch("/api/v1/users/current")
+            .set("Authorization", "test")
+            .send({
+                name: "Bella",
+                password: "123lagi"
+            })
+
+        expect(result.status).toBe(200)
+        expect(result.body.data.name).toBe("Bella")
+
+        const user = await getUserTest()
+        expect(await bcrypt.compare("123lagi", user.password)).toBe(true)
+    })
+
+    it("should can update user (name)", async () => {
+        const result = await supertest(web)
+            .patch("/api/v1/users/current")
+            .set("Authorization", "test")
+            .send({
+                name: "Bella",
+            })
+
+        expect(result.status).toBe(200)
+        expect(result.body.data.name).toBe("Bella")
+    })
+
+    it("should can update user (password)", async () => {
+        const result = await supertest(web)
+            .patch("/api/v1/users/current")
+            .set("Authorization", "test")
+            .send({
+                password: "ngasal"
+            })
+
+        expect(result.status).toBe(200)
+        expect(result.body.data.name).toBe("Test")
+
+        const user = await getUserTest()
+        expect(await bcrypt.compare("ngasal", user.password)).toBe(true)
+    })
+
+    it("should can't update user (unauthorized)", async () => {
+        const result = await supertest(web)
+            .patch("/api/v1/users/current")
+            .set("Authorization", "test123")
+            .send({
+                name: "Bella",
+            })
+
+        expect(result.status).toBe(401)
     })
 })
 
