@@ -212,3 +212,49 @@ describe("PUT /api/v1/contacts/:contactId/addresses/:addressId", () => {
         expect(result.status).toBe(404)
     })
 })
+
+describe("DELETE /api/v1/contacts/:contactId/addresses/:addressId", () => {
+    beforeEach(async () => {
+        await createUserTest()
+        await createContactTest()
+        await createAddressTest()
+    })
+
+    afterEach(async () => {
+        await removeAllAddressTest()
+        await removeAllContactTest()
+        await removeUserTest()
+    })
+
+    it("should can delete address", async () => {
+        const contact = await getContactTest()
+        const addr = await getAddressTest()
+        const result = await supertest(web)
+            .delete("/api/v1/contacts/"+contact.id+"/addresses/"+addr.id)
+            .set("Authorization", "test")
+
+        expect(result.status).toBe(200)
+        expect(result.body.data).toBe("OK")
+
+    })
+
+    it("should can't delete address (contact not found)", async () => {
+        const contact = await getContactTest()
+        const addr = await getAddressTest()
+        const result = await supertest(web)
+            .delete("/api/v1/contacts/"+(contact.id+1)+"/addresses/"+addr.id)
+            .set("Authorization", "test")
+
+        expect(result.status).toBe(404)
+    })
+
+    it("should can't delete address (address not found)", async () => {
+        const contact = await getContactTest()
+        const addr = await getAddressTest()
+        const result = await supertest(web)
+            .delete("/api/v1/contacts/"+contact.id+"/addresses/"+(addr.id+1))
+            .set("Authorization", "test")
+
+        expect(result.status).toBe(404)
+    })
+})
