@@ -123,3 +123,92 @@ describe("GET /api/v1/contacts/:contactId/addresses/:addressId", () => {
         expect(result.status).toBe(404)
     })
 })
+
+describe("PUT /api/v1/contacts/:contactId/addresses/:addressId", () => {
+    beforeEach(async () => {
+        await createUserTest()
+        await createContactTest()
+        await createAddressTest()
+    })
+
+    afterEach(async () => {
+        await removeAllAddressTest()
+        await removeAllContactTest()
+        await removeUserTest()
+    })
+
+    it("should can update address",async () => {
+        const contact = await getContactTest()
+        const addr = await getAddressTest()
+
+        const result = await supertest(web)
+            .put("/api/v1/contacts/"+contact.id+"/addresses/"+addr.id)
+            .set("Authorization","test")
+            .send({
+                street: "Jalan apa update",
+                city: "Kota apa update",
+                province: "Provinsi apa update",
+                country: "Konoha update",
+                postal_code: "52341"
+            })
+
+        expect(result.status).toBe(200)
+        expect(result.body.data.id).toBe(addr.id)
+        expect(result.body.data.postal_code).toBe("52341")
+        expect(result.body.data.country).toBe("Konoha update")
+    })
+
+    it("should can't update address(bad request)",async () => {
+        const contact = await getContactTest()
+        const addr = await getAddressTest()
+
+        const result = await supertest(web)
+            .put("/api/v1/contacts/"+contact.id+"/addresses/"+addr.id)
+            .set("Authorization","test")
+            .send({
+                street: "Jalan apa update",
+                city: "Kota apa update",
+                province: "Provinsi apa update",
+                country: "",
+                postal_code: "52341"
+            })
+
+        expect(result.status).toBe(400)
+    })
+
+    it("should can't update address(contact not found)",async () => {
+        const contact = await getContactTest()
+        const addr = await getAddressTest()
+
+        const result = await supertest(web)
+            .put("/api/v1/contacts/"+(contact.id+1)+"/addresses/"+addr.id)
+            .set("Authorization","test")
+            .send({
+                street: "Jalan apa update",
+                city: "Kota apa update",
+                province: "Provinsi apa update",
+                country: "",
+                postal_code: "52341"
+            })
+
+        expect(result.status).toBe(404)
+    })
+
+    it("should can't update address(address not found)",async () => {
+        const contact = await getContactTest()
+        const addr = await getAddressTest()
+
+        const result = await supertest(web)
+            .put("/api/v1/contacts/"+contact.id+"/addresses/"+(addr.id+1))
+            .set("Authorization","test")
+            .send({
+                street: "Jalan apa update",
+                city: "Kota apa update",
+                province: "Provinsi apa update",
+                country: "Konoha update",
+                postal_code: "52341"
+            })
+
+        expect(result.status).toBe(404)
+    })
+})

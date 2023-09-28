@@ -22,3 +22,4 @@ authRouter.delete("/api/v1/contacts/:contactId", contactController.remove)
 // address endpoints
 authRouter.post("/api/v1/contacts/:contactId/addresses", addressController.create)
 authRouter.get("/api/v1/contacts/:contactId/addresses/:addressId", addressController.getById)
+authRouter.put("/api/v1/contacts/:contactId/addresses/:addressId", addressController.update)
