@@ -112,3 +112,32 @@ describe("POST /api/v1/users/login", () => {
     })
 })
 
+describe("GET /api/v1/users/current", () => {
+    beforeEach(async () => {
+        await createUserTest()
+    })
+
+    afterEach(async () => {
+        await removeUserTest()
+    })
+
+    it('should can get user', async () => {
+        const result = await supertest(web)
+            .get("/api/v1/users/current")
+            .set("Authorization","test")
+
+        expect(result.status).toBe(200)
+        expect(result.body.data.username).toBe("test")
+        expect(result.body.data.password).toBeUndefined()
+    })
+
+    it("should can't get user (Unauthorized)", async () => {
+        const result = await supertest(web)
+            .get("/api/v1/users/current")
+            .set("Authorization","test123")
+
+        expect(result.status).toBe(401)
+        expect(result.body.errors).toBeDefined()
+    })
+})
+
