@@ -1,5 +1,5 @@
 import express from "express"
-import {publicRouter} from "../router/user-controller.js";
+import {publicRouter} from "../router/public-router.js";
 import {errorMiddleware} from "../middleware/error-middleware.js";
 import {authRouter} from "../router/auth-router.js";
 
