@@ -146,3 +146,37 @@ describe("PUT /api/v1/contacts/:contactId", () => {
         expect(result.status).toBe(404)
     })
 })
+
+describe("DELETE /api/v1/contacts/:contactId", () => {
+
+    beforeEach(async () => {
+        await createUserTest()
+        await createContactTest()
+    })
+
+    afterEach(async () => {
+        await removeAllContactTest()
+        await removeUserTest()
+    })
+
+    it("should can delete contact", async () => {
+        const contact = await getContactTest()
+
+        const result = await supertest(web)
+            .delete("/api/v1/contacts/"+contact.id)
+            .set("Authorization", "test")
+
+        expect(result.status).toBe(200)
+        expect(result.body.data).toBe("OK")
+    })
+
+    it("should can't delete contact (not found)", async () => {
+        const contact = await getContactTest()
+
+        const result = await supertest(web)
+            .delete("/api/v1/contacts/"+(contact.id+1))
+            .set("Authorization", "test")
+
+        expect(result.status).toBe(404)
+    })
+})
