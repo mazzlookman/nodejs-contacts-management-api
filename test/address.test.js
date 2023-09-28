@@ -2,7 +2,7 @@ import supertest from "supertest";
 import {web} from "../src/app/web.js";
 import {
     createAddressTest,
-    createContactTest,
+    createContactTest, createManyAddress, createManyAddressTest,
     createUserTest, getAddressTest, getContactTest,
     removeAllAddressTest,
     removeAllContactTest,
@@ -253,6 +253,39 @@ describe("DELETE /api/v1/contacts/:contactId/addresses/:addressId", () => {
         const addr = await getAddressTest()
         const result = await supertest(web)
             .delete("/api/v1/contacts/"+contact.id+"/addresses/"+(addr.id+1))
+            .set("Authorization", "test")
+
+        expect(result.status).toBe(404)
+    })
+})
+
+describe("GET /api/v1/contacts/:contactId/addresses", () => {
+    beforeEach(async () => {
+        await createUserTest()
+        await createContactTest()
+        await createManyAddressTest()
+    })
+
+    afterEach(async () => {
+        await removeAllAddressTest()
+        await removeAllContactTest()
+        await removeUserTest()
+    })
+
+    it("should can get address by contact id", async() => {
+        const contact = await getContactTest()
+        const result = await supertest(web)
+            .get("/api/v1/contacts/"+contact.id+"/addresses")
+            .set("Authorization", "test")
+
+        expect(result.status).toBe(200)
+        expect(result.body.data.length).toBe(5)
+    })
+
+    it("should can't get address by contact id (contact not found)", async() => {
+        const contact = await getContactTest()
+        const result = await supertest(web)
+            .get("/api/v1/contacts/"+(contact.id+1)+"/addresses")
             .set("Authorization", "test")
 
         expect(result.status).toBe(404)

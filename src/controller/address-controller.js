@@ -48,9 +48,21 @@ const remove = async (req, res, next) => {
     }
 }
 
+const getByContactId = async (req, res, next) => {
+    try {
+        const result = await addressService.getByContactId(req.user.username, req.params.contactId)
+        res.status(200).json({
+            data: result
+        })
+    } catch (e) {
+        next(e)
+    }
+}
+
 export default {
     create,
     getById,
     update,
     remove,
+    getByContactId
 }

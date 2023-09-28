@@ -103,3 +103,19 @@ export const getAddressTest = async () => {
         }
     })
 }
+
+export const createManyAddressTest = async () => {
+    const contact = await getContactTest()
+    for (let i = 0; i < 5; i++) {
+        await prismaClient.address.create({
+            data: {
+                contact_id: contact.id,
+                street: `test-address${i}`,
+                city: `test-address${i}`,
+                province: `test-address${i}`,
+                country: `test-address${i}`,
+                postal_code: `test-address${i}`,
+            }
+        })
+    }
+}

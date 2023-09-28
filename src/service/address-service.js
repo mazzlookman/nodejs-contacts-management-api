@@ -128,9 +128,33 @@ const remove = async (username, contactId, addressId) => {
     })
 }
 
+const getByContactId = async (username, contactId) => {
+    contactId = await makeSureContactExist(username,contactId)
+    const addresses = await prismaClient.address.findMany({
+        where: {
+            contact_id: contactId
+        },
+        select: {
+            id: true,
+            street: true,
+            city: true,
+            province: true,
+            country: true,
+            postal_code: true
+        }
+    })
+
+    if (addresses.length === 0) {
+        throw new ResponseError(404,"Address not found")
+    }
+
+    return addresses
+}
+
 export default {
     create,
     getById,
     update,
     remove,
+    getByContactId
 }
