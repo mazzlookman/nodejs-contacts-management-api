@@ -13,3 +13,4 @@ authRouter.delete("/api/v1/users/logout", userController.logout)
 
 // contact endpoints
 authRouter.post("/api/v1/contacts", contactController.create)
+authRouter.get("/api/v1/contacts/:contactId", contactController.getById)
