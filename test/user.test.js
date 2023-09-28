@@ -206,3 +206,33 @@ describe("PATCH /api/v1/users/current", () => {
     })
 })
 
+describe("DELETE /api/v1/users/logout", () => {
+    beforeEach(async () => {
+        await createUserTest()
+    })
+
+    afterEach(async () => {
+        await removeUserTest()
+    })
+
+    it("should can logout", async () => {
+        const result = await supertest(web)
+            .delete("/api/v1/users/logout")
+            .set("Authorization", "test")
+
+        expect(result.status).toBe(200)
+        expect(result.body.data).toBe("OK")
+
+        const user = await getUserTest()
+        expect(user.token).toBeNull()
+    })
+
+    it("should can't logout (unauthorized)", async () => {
+        const result = await supertest(web)
+            .delete("/api/v1/users/logout")
+            .set("Authorization", "test123")
+
+        expect(result.status).toBe(401)
+        expect(result.body.errors).toBeDefined()
+    })
+})
