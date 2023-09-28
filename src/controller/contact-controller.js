@@ -26,7 +26,24 @@ const getById = async (req, res, next) => {
     }
 }
 
+const update = async (req, res, next) => {
+    try {
+        const username = req.user.username
+        const contactId = req.params.contactId
+        const request = req.body
+        request.id = contactId
+
+        const result = await contactService.update(username, request)
+        res.status(200).json({
+            data: result
+        })
+    } catch (e) {
+        next(e)
+    }
+}
+
 export default {
     create,
     getById,
+    update,
 }

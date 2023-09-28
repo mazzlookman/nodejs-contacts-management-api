@@ -84,3 +84,65 @@ describe("GET /api/v1/contacts/:contactId", () => {
         expect(result.body.errors).toBeDefined()
     })
 })
+
+describe("PUT /api/v1/contacts/:contactId", () => {
+    beforeEach(async () => {
+        await createUserTest()
+        await createContactTest()
+    })
+
+    afterEach(async () => {
+        await removeAllContactTest()
+        await removeUserTest()
+    })
+
+    it("should can update contact", async () => {
+        const contact = await getContactTest()
+
+        const result = await supertest(web)
+            .put("/api/v1/contacts/"+contact.id)
+            .set("Authorization", "test")
+            .send({
+                first_name: "first",
+                last_name: "last",
+                email: "update@test.com",
+                phone: "081209876543"
+            })
+
+        expect(result.status).toBe(200)
+        expect(result.body.data.email).toBe("update@test.com")
+        expect(result.body.data.id).toBe(contact.id)
+    })
+
+    it("should can't update contact (bad request)", async () => {
+        const contact = await getContactTest()
+
+        const result = await supertest(web)
+            .put("/api/v1/contacts/"+contact.id)
+            .set("Authorization", "test")
+            .send({
+                first_name: "",
+                last_name: "last",
+                email: "update@test.com",
+                phone: "081209876543"
+            })
+
+        expect(result.status).toBe(400)
+    })
+
+    it("should can't update contact (not found)", async () => {
+        const contact = await getContactTest()
+
+        const result = await supertest(web)
+            .put("/api/v1/contacts/"+(contact.id+1))
+            .set("Authorization", "test")
+            .send({
+                first_name: "first",
+                last_name: "last",
+                email: "update@test.com",
+                phone: "081209876543"
+            })
+
+        expect(result.status).toBe(404)
+    })
+})
