@@ -2,8 +2,9 @@
   "name": "nodejs-contact-management-api",
   "version": "1.0.0",
   "description": "NodeJS Contact Management API",
-  "main": "./src/main.js",
+  "main": "src/main.js",
   "scripts": {
+    "start": "node src/main.js",
     "test": "jest"
   },
   "jest": {
