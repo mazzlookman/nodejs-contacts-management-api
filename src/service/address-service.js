@@ -7,7 +7,6 @@ import {
     getAddressValidation,
     updateAddressValidation
 } from "../validation/address-validation.js";
-import {add} from "winston";
 
 const makeSureContactExist = async (username, contactId) => {
     contactId = requestValidation(getContactValidation, contactId)

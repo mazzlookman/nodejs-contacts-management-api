@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  contacts-app-mysql:
+    image: mysql
+    container_name: contacts-app-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: nodejs_contacts_management_api
+    restart: always
+
+  contacts-app:
+    image: contacts-app:latest
+    container_name: contacts-app
+    depends_on:
+      - contacts-app-mysql
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "2802:2802"
+    restart: always
