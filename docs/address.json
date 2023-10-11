@@ -388,42 +388,27 @@
       "BadRequestError": {
         "type": "object",
         "properties": {
-          "data": {
-            "type": "object",
-            "properties": {
-              "errors": {
-                "type": "string",
-                "example": "#bad request error message"
-              }
-            }
+          "errors": {
+            "type": "string",
+            "example": "#bad request error message"
           }
         }
       },
       "NotFoundError": {
         "type": "object",
         "properties": {
-          "data": {
-            "type": "object",
-            "properties": {
-              "errors": {
-                "type": "string",
-                "example": "#not found error message"
-              }
-            }
+          "errors": {
+            "type": "string",
+            "example": "#not found error message"
           }
         }
       },
       "UnauthorizedError": {
         "type": "object",
         "properties": {
-          "data": {
-            "type": "object",
-            "properties": {
-              "errors": {
-                "type": "string",
-                "example": "#unauthorized error message"
-              }
-            }
+          "errors": {
+            "type": "string",
+            "example": "#unauthorized error message"
           }
         }
       }
