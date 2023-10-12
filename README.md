@@ -1,32 +1,23 @@
-# Go Online Courses API
+# NodeJS Contacts Management API
 
----
 ### Description
 
 ---
 This project is a RESTful API of contacts management website. 
-Here it is applied in a project named "Contacts Management API", which is made using NodeJS and ExpressJS Framework. 
+Here it is applied in a project named "NodeJS Contacts Management API", which is made using NodeJS and ExpressJS Framework. 
 This project implements `Clean Code`, `Integration Testing`, and `API Documentation`.
 
 ### Libraries and Tools Used
 
 ---
 1. Prisma ORM: [www.npmjs.com/package/prisma](https://www.npmjs.com/package/prisma)
-2. Password Hashing (Bcrypt): [www.npmjs.com/package/bcrypt](https://www.npmjs.com/package/bcrypt)
-3. Request Payload Validation: [www.npmjs.com/package/joi](https://www.npmjs.com/package/joi)
+2. Integration Testing: [www.npmjs.com/package/jest](https://www.npmjs.com/package/jest)
+3. HTTP Testing: [www.npmjs.com/package/supertest](https://www.npmjs.com/package/supertest)
 4. UUID Generator: [www.npmjs.com/package/uuid](https://www.npmjs.com/package/uuid)
 5. Logging: [www.npmjs.com/package/winston](https://www.npmjs.com/package/winston)
+6. Password Hashing (Bcrypt): [www.npmjs.com/package/bcrypt](https://www.npmjs.com/package/bcrypt)
+7. Request Payload Validation: [www.npmjs.com/package/joi](https://www.npmjs.com/package/joi) 
 > The full details can be seen on `./package-lock.json`
-
-### Database Design
-
----
-![DB_DESIGN](https://ik.imagekit.io/mazzlookman/nodejs_contact_management_api_diagram.png?updatedAt=1697029871229)
-
-Table Relationship:
-* `users` table has `one to many` relationship with `contacts` table.
-* `contacts` table has `one to many` relationship with `addresses` table.
-
 
 ### How To Run This Project ?
 
@@ -68,6 +59,15 @@ with `json` file format. If you want to get the UI display of this API Documenta
 > Which I know:
 > * Jetbrains: is automatically installed
 > * VSCode: it's "OpenAPI (Swagger) Editor".
+
+### Database Design
+
+---
+![DB_DESIGN](https://ik.imagekit.io/mazzlookman/nodejs_contact_management_api_diagram.png?updatedAt=1697029871229)
+
+Table relationship:
+* `users` table has `one to many` relationship with `contacts` table.
+* `contacts` table has `one to many` relationship with `addresses` table.
 
 ### How To Contribute?
 
